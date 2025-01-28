@@ -1,0 +1,17 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: nginx-jenkins-webapp
+spec:
+  components:
+    - name: nginx-jenkins-service
+      type: webservice
+      properties:
+        image: "crnksldockerhub/ci-app-example:latest"
+        port: 80
+#      traits:
+#        - type: ingress
+#          properties:
+#            domain: "argela.nginx.example.com"
+#            http:
+#              /: 80
