@@ -5,26 +5,28 @@ pipeline {
     agent {
         kubernetes {
             cloud 'kubernetes'
+            defaultContainer 'kaniko'
             yaml """
             apiVersion: v1
             kind: Pod
             metadata:
-              labels:
-                app: jenkins-agent
+            labels:
+                app: jenkins-kaniko
             spec:
-              containers:
-              - name: docker
-                image: docker:20.10.7
+            serviceAccountName: jenkins  
+            containers:
+            - name: kaniko
+                image: gcr.io/kaniko-project/executor:latest
                 command:
-                - cat
+                - /busybox/cat
                 tty: true
                 volumeMounts:
-                - mountPath: /var/run/docker.sock
-                  name: docker-socket
-              volumes:
-              - name: docker-socket
-                hostPath:
-                  path: /var/run/docker.sock
+                - name: docker-config
+                mountPath: /kaniko/.docker/
+            volumes:
+            - name: docker-config
+                secret:
+                secretName: dockerhub-credentials
             """
         }
     }
