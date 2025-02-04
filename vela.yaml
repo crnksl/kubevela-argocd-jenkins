@@ -9,6 +9,11 @@ spec:
       properties:
         image: "crnksldockerhub/ci-app-example:latest"
         port: 80
+  policies:
+    - name: deploy-policy
+      type: topology
+      properties:
+        clusters: ["local"]      
 #      traits:
 #        - type: ingress
 #          properties:
